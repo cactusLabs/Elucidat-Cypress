@@ -23,41 +23,41 @@ describe('Automation Testing challenge for Elucidat', () => {
     }).then(() => {
       cy.get('title', {timeout: 3000}).contains('Finding the Truth').should('exist');
       // Image
-      cy.get('div[id="pa_5c9126fe3b767_p1553447461d-image__inner"]', {timeout: 3000}).should('be.visible');
+      cy.get('div[id="pa_5c9126fe3b767_p1553447461d-image__inner"]', {timeout: 10000}).should('be.visible');
       // Strings
       cy.get('p').contains('Explore three cases to explore different aspects of the criminal justice system. Are you more likely to side with the establishment, or to sit on the side of the individual?').should('be.visible', {timeout: 3000});
-      cy.get('p>em').contains('Note - you will need audio in order to get the most out of this game.').should('be.visible', {timeout: 3000});
+      cy.get('p>em').contains('Note - you will need audio in order to get the most out of this game.').should('be.visible', {timeout: 10000});
       // Button
-      cy.get('a[class*="button"]').should('be.visible', {timeout: 3000}).should('contain', 'START');
+      cy.get('a[class*="button"]').should('be.visible', {timeout: 10000}).should('contain', 'START');
     }).then(() => {
       // this isn't ideal but let's wait a moment
       cy.wait(1000);
     }).then(() => {
-      cy.get('span').contains('START').click({force: true, timeout: 30000});
+      cy.get('span').contains('START').click({force: true, timeout: 10000});
     }).then(() => {
       // PAGE: 'FINDING THE TRUTH'
-      cy.get('strong').contains('FINDING THE TRUTH').should('be.visible', {timeout: 3000});
+      cy.get('strong').contains('FINDING THE TRUTH').should('be.visible', {timeout: 10000});
       // Strings
-      cy.get('div').contains('Press on a case to get started.', {timeout: 3000}).should('be.visible');
-      cy.get('div').contains('Making a case against Kevin', {timeout: 3000}).should('be.visible');
-      cy.get('div').contains('Who is to blame?', {timeout: 3000}).should('be.visible');
+      cy.get('div').contains('Press on a case to get started.', {timeout: 10000}).should('be.visible');
+      cy.get('div').contains('Making a case against Kevin', {timeout: 10000}).should('be.visible');
+      cy.get('div').contains('Who is to blame?', {timeout: 10000}).should('be.visible');
       // Expected behaviour to be confirmed with Dev/Product Owner.  Current behaviour of date displayed is likely unacceptable
-      cy.get('div').contains('Your score so far:', {timeout: 3000}).should('be.visible');
+      cy.get('div').contains('Your score so far:', {timeout: 10000}).should('be.visible');
       // Images
-      cy.get('div[id="pa_5c9126fe3f4fb_p179d7b273e1-card__image-1"]', {timeout: 3000}).should('be.visible');
-      cy.get('div[id="pa_5c9126fe3f4fb_p179d7b273e1-card__image-2"]', {timeout: 3000}).should('be.visible');
+      cy.get('div[id="pa_5c9126fe3f4fb_p179d7b273e1-card__image-1"]', {timeout: 10000}).should('be.visible');
+      cy.get('div[id="pa_5c9126fe3f4fb_p179d7b273e1-card__image-2"]', {timeout: 10000}).should('be.visible');
       // Ideally would test mouseover effects here .. foo.trigger('mouseover')  ??
     }).then(() => {
       // Both links appear to lead to the same page (does not seem correct), so just click one 
-      cy.get('div[id="pa_5c9126fe3f4fb_p179d7b273e1-card__image-2"]', {timeout: 3000}).click({force: true});
+      cy.get('div[id="pa_5c9126fe3f4fb_p179d7b273e1-card__image-2"]', {timeout: 10000}).click({force: true});
     }).then(() => {
       cy.wait(1000);
     }).then(() => {
       // PAGE: 'WHAT HAPPENED?'
       // Strings
-      cy.get('div').contains('A murder has been committed in an alleyway outside a pub.', {timeout: 3000}).should('be.visible');
-      cy.get('div').contains('Watch the video to find out exactly what happened.', {timeout: 3000}).should('be.visible');
-      cy.get('div').contains('Press \'Judge This\' once you have watched it.', {timeout: 3000}).should('be.visible');
+      cy.get('div').contains('A murder has been committed in an alleyway outside a pub.', {timeout: 10000}).should('be.visible');
+      cy.get('div').contains('Watch the video to find out exactly what happened.', {timeout: 10000}).should('be.visible');
+      cy.get('div').contains('Press \'Judge This\' once you have watched it.', {timeout: 10000}).should('be.visible');
     }).then(() => {
       cy.wait(1000);
     }).then(() => {
@@ -71,13 +71,13 @@ describe('Automation Testing challenge for Elucidat', () => {
       });
     }).then(() => {
       // Button
-      cy.get('span').contains('JUDGE THIS').should('be.visible').click({force: true});
+      cy.get('span').contains('JUDGE THIS', {timeout: 10000}).should('be.visible').click({force: true});
     }).then(() => {
       // PAGE: GUILTY OR NOT?
-      cy.get('div').contains('Based on what you know about the case against Kevin so far...').should('be.visible');
-      cy.get('div').contains('Based on what you know about the case against Kevin so far...').should('be.visible');
-      cy.get('strong').contains('Guilty').should('be.visible');
-      cy.get('strong').contains('Not guilty').should('be.visible');
+      cy.get('div').contains('Based on what you know about the case against Kevin so far...', {timeout: 10000}).should('be.visible');
+      cy.get('div').contains('Based on what you know about the case against Kevin so far...', {timeout: 10000}).should('be.visible');
+      cy.get('strong').contains('Guilty', {timeout: 10000}).should('be.visible');
+      cy.get('strong').contains('Not guilty', {timeout: 10000}).should('be.visible');
     }).then(() => {
       // Test clicking behaviour of radio buttons...
       
