@@ -12,7 +12,7 @@ export default class WhatHappened {
         return cy.get('span').contains('JUDGE THIS', {timeout: 30000});
     }
     getVideoIframe() {
-        return cy.get('iframe[id="video1"]', {timeout: 600000});
+        return cy.get('iframe[id="video1"]', {timeout: 1200000});
     }
     getWatchVideo() { 
         return cy.get('div').contains('Watch the video to find out exactly what happened.', {timeout: 30000});

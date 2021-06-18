@@ -1,4 +1,7 @@
 export default class GuiltyOrNot {  
+    getAnswer1(){
+        return cy.get('div[id="pa_5c9126fe47260_p15515116385-answer-1"]', {timeout: 30000});
+    }
     getBackground() {
         return cy.get('div[class="page__background"]', {timeout: 30000});
     }
@@ -13,5 +16,8 @@ export default class GuiltyOrNot {
     }
     getNotGuilty() {
         return cy.get('strong').contains('Not guilty', {timeout: 30000});
+    }
+    getRadio1() {
+        return cy.get('#field_1', {timeout: 30000});
     }
 }
