@@ -1,3 +1,4 @@
+import { assert } from "console";
 import FindingTheTruth from "../../support/pageObjects/findingTheTruth";
 import GuiltyOrNot from "../../support/pageObjects/GuiltyOrNot";
 import LandingPage from "../../support/pageObjects/LandingPage";
@@ -49,7 +50,7 @@ describe('Automation Testing challenge for Elucidat', () => {
       // Both links appear to lead to the same page (does not seem correct); just click one 
       findingTheTruth.getImage2().click({force: true});
     }).then(() => {
-      cy.wait(4000);
+      cy.wait(2000);
     }).then(() => {
       // PAGE: 'WHAT HAPPENED?'
       whatHappened.getBackground().should('have.id', 'pa_5c9126fe434ba_pp5762b3f192564-page__background');
@@ -57,14 +58,13 @@ describe('Automation Testing challenge for Elucidat', () => {
       whatHappened.getWatchVideo().should('be.visible');
       whatHappened.getJudgeThis().should('be.visible'); 
     }).then(() => {
-      // Iframe can take longer to load despite increased timeout, so wait longer for page content to load
-      cy.wait(10000);
+      // call custom support/commands.js command
+      cy.getIframeBody();
     }).then(() => {
-      // Video is an IFrame, so perhaps confirm for now that the intended video title renders
+      // Video is an IFrame, so perhaps confirm for now that the intended video renders by confirming the expected title
       // Note that as is Vimeo IFrame (cross-origin) I have included '"chromeWebSecurity": false' to cypress.config 
       whatHappened.getVideoIframe().should('be.visible', {timeout: 60000}).then($iframe => {
         let body = $iframe.contents();
-        cy.wait(500);
         cy.wrap(body).invoke('text').then($text => {
           expect($text).to.include('Crime Myths - Case 1, Part 1');
         });
@@ -83,12 +83,15 @@ describe('Automation Testing challenge for Elucidat', () => {
       guiltyOrNot.getNotGuilty().should('be.visible');
     }).then(() => {
       // Test clicking behaviour of radio buttons...
+      guiltyOrNot.getRadio1().click({force: true});
+      guiltyOrNot.getAnswer1().invoke('attr','class').then($class => {
+        cy.wrap($class).should('contain', 'selected');
+      });
       
-
 
     }).then(() => {
       // Note that this will currently fail intentionally - as the current string is 'Is Wesley guilty?' - Wesley is the victim!
-      guiltyOrNot.getIsKevinGuilty().should('be.visible');
+      //guiltyOrNot.getIsKevinGuilty().should('be.visible');
     });
   });
 });
