@@ -1,8 +1,7 @@
-import { assert } from "console";
-import FindingTheTruth from "../../support/pageObjects/findingTheTruth";
-import GuiltyOrNot from "../../support/pageObjects/GuiltyOrNot";
-import LandingPage from "../../support/pageObjects/LandingPage";
-import WhatHappened from "../../support/pageObjects/WhatHappened";
+import FindingTheTruth from "../support/pageObjects/findingTheTruth";
+import GuiltyOrNot from "../support/pageObjects/GuiltyOrNot";
+import LandingPage from "../support/pageObjects/LandingPage";
+import WhatHappened from "../support/pageObjects/WhatHappened";
 
 // pageObjects
 let findingTheTruth = new FindingTheTruth();
@@ -12,15 +11,15 @@ let whatHappened = new WhatHappened();
 
 let url = "https://learning.elucidat.com/course/5c9126fd760e5-60ba4c3fe8135";
 
-describe('Automation Testing challenge for Elucidat', () => {
-  it('Functionally tests a subset of the expected page content', () => {
+describe('Automation Testing challenge for Elucidat.', () => {
+  it('Functionally tests a subset of the specified page content.', () => {
     cy.wrap(null).then(() => {
-      // LANDING PAGE: 'FINDING THE TRUTH':
       cy.visit(url, {timeout: 30000});
     }).then(() => {
+      // LANDING PAGE: 'FINDING THE TRUTH':
       landingPage.getLoading().should('be.visible');
     }).then(() => {
-      // explicit waits aren't ideal but...
+      // explicit waits aren't ideal... but let's wait a moment when a page first loads
       cy.wait(4000);
     }).then(() => {
       landingPage.getBackground().should('have.id', 'pa_5c9126fe3b767_pp5762b3f192564-page__background');
@@ -32,7 +31,7 @@ describe('Automation Testing challenge for Elucidat', () => {
     }).then(() => {
       landingPage.getButton().contains('START').click({force:true});
     }).then(() => {
-      cy.wait(2000);
+      cy.wait(4000);
     }).then(() => {
       // PAGE: 'FINDING THE TRUTH'
       findingTheTruth.getBackground().should('have.id', 'pa_5c9126fe3f4fb_pp5762b3f192564-page__background');
@@ -50,7 +49,7 @@ describe('Automation Testing challenge for Elucidat', () => {
       // Both links appear to lead to the same page (does not seem correct); just click one 
       findingTheTruth.getImage2().click({force: true});
     }).then(() => {
-      cy.wait(2000);
+      cy.wait(4000);
     }).then(() => {
       // PAGE: 'WHAT HAPPENED?'
       whatHappened.getBackground().should('have.id', 'pa_5c9126fe434ba_pp5762b3f192564-page__background');
@@ -74,7 +73,7 @@ describe('Automation Testing challenge for Elucidat', () => {
     }).then(() => {
       whatHappened.getJudgeThisButton().should('be.visible').click({force: true});
     }).then(() => {
-      cy.wait(2000);
+      cy.wait(4000);
     }).then(() => {
       // PAGE: GUILTY OR NOT?                       
       guiltyOrNot.getBackground().should('have.id', 'pa_5c9126fe47260_pp5762b3f192564-page__background')
@@ -82,16 +81,48 @@ describe('Automation Testing challenge for Elucidat', () => {
       guiltyOrNot.getGuilty().should('be.visible');
       guiltyOrNot.getNotGuilty().should('be.visible');
     }).then(() => {
-      // Test clicking behaviour of radio buttons...
-      guiltyOrNot.getRadio1().click({force: true});
+      // When either radio button 1 or 'Guilty' is clicked, selection should toggle
+      // (Note/to do: ideally would also test the toggling of the lock/caret icon here (it toggles with selection too)
+      guiltyOrNot.getRadio1().should('be.visible').click({force: true});
+      cy.wait(500);
       guiltyOrNot.getAnswer1().invoke('attr','class').then($class => {
         cy.wrap($class).should('contain', 'selected');
       });
-      
-
+      guiltyOrNot.getGuilty().click({force: true});
+      cy.wait(500);
+      guiltyOrNot.getAnswer1().invoke('attr','class').then($class => {
+        cy.wrap($class).should('not.contain', 'selected');
+      });
+      // When either radio button 2 or 'Not guilty' is clicked, selection should toggle
+      // (Note/to do: ideally would also test the toggling of the lock/caret icon here (it toggles with selection too)
+      guiltyOrNot.getRadio2().should('be.visible').click({force: true});
+      cy.wait(500);
+      guiltyOrNot.getAnswer2().invoke('attr','class').then($class => {
+        cy.wrap($class).should('contain', 'selected');
+      });
+      guiltyOrNot.getNotGuilty().click({force: true});
+      cy.wait(500);
+      guiltyOrNot.getAnswer2().invoke('attr','class').then($class => {
+        cy.wrap($class).should('not.contain', 'selected');
+      });
     }).then(() => {
-      // Note that this will currently fail intentionally - as the current string is 'Is Wesley guilty?' - Wesley is the victim!
-      //guiltyOrNot.getIsKevinGuilty().should('be.visible');
+      // Note that this will currently fail - as the current string is 'Is Wesley guilty?' - Wesley is the victim!
+      // guiltyOrNot.getIsKevinGuilty().should('be.visible');
+    }).then(() => {
+      // Make a selection and 'Vote'
+      guiltyOrNot.getRadio1().click({force: true});
+      cy.wait(500);
+      guiltyOrNot.getVote().should('be.visible').click({force: true});
+    }).then(() => {
+      // Example of getting an element (the modal) and confirming that it contains child strings
+      guiltyOrNot.getModal().should('be.visible').find('strong').contains('GUILTY!');
+      guiltyOrNot.getModal().should('contain', 'You think Kevin is guilty.');
+      guiltyOrNot.getModal().should('contain', 'Move on to find out more about the evidence. Will you be able to use it to prove his guilt?');
+      cy.wait(500); 
+      guiltyOrNot.getContinueButton().should('be.exist').parent().click({force: true});
+    }).then(() => {
+      // to be continued, a.k.a
+      // the road goes ever on...
     });
   });
 });
