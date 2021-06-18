@@ -57,11 +57,15 @@ describe('Automation Testing challenge for Elucidat', () => {
       whatHappened.getWatchVideo().should('be.visible');
       whatHappened.getJudgeThis().should('be.visible'); 
     }).then(() => {
+      // Iframe can take longer to load despite increased timeout, so wait longer for page content to load
+      cy.wait(10000);
+    }).then(() => {
       // Video is an IFrame, so perhaps confirm for now that the intended video title renders
       // Note that as is Vimeo IFrame (cross-origin) I have included '"chromeWebSecurity": false' to cypress.config 
-      whatHappened.getVideoIframe().should('be.visible').then($iframe => {
-        let title = $iframe.contents().find('a');
-        cy.wrap(title).invoke('text').then($text => {
+      whatHappened.getVideoIframe().should('be.visible', {timeout: 60000}).then($iframe => {
+        let body = $iframe.contents();
+        cy.wait(500);
+        cy.wrap(body).invoke('text').then($text => {
           expect($text).to.include('Crime Myths - Case 1, Part 1');
         });
       });
