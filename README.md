@@ -1,6 +1,6 @@
-# Elucidat testing examples for URL: https://learning.elucidat.com/course/5c9126fd760e5-60ba4c3fe8135
+# Elucidat testing examples 
 
-This repo provides examples of software testing including:
+This repo provides examples of software testing for URL: https://learning.elucidat.com/course/5c9126fd760e5-60ba4c3fe8135 including:
 * Cypress UI Automated Testing project 
 * Examples of user stories/acceptance criteria in Cucumber/Gherkin format 
 * Examples of bug reporting in spreadsheet format
