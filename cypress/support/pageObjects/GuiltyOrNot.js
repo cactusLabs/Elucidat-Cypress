@@ -35,4 +35,7 @@ export default class GuiltyOrNot {
     getVote(){
         return cy.get('span').contains('VOTE');
     }
+    getVoteState(){
+        return cy.get('div[class*="buttonHolder"]>a');
+    }
 }

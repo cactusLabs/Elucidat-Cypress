@@ -1,3 +1,5 @@
+import { assert } from "console";
+import { get } from "http";
 import FindingTheTruth from "../support/pageObjects/findingTheTruth";
 import GuiltyOrNot from "../support/pageObjects/GuiltyOrNot";
 import LandingPage from "../support/pageObjects/LandingPage";
@@ -57,11 +59,13 @@ describe('Automation Testing challenge for Elucidat.', () => {
       whatHappened.getWatchVideo().should('be.visible');
       whatHappened.getJudgeThis().should('be.visible'); 
     }).then(() => {
-      // call custom support/commands.js command
+      // Video is an IFrame:  
+      // Note that as is Vimeo IFrame (cross-origin) I have included '"chromeWebSecurity": false' to cypress.config 
+
+      // Call custom support/commands.js command - wait for IFrame to become available
       cy.getIframeBody();
     }).then(() => {
-      // Video is an IFrame, so perhaps confirm for now that the intended video renders by confirming the expected title
-      // Note that as is Vimeo IFrame (cross-origin) I have included '"chromeWebSecurity": false' to cypress.config 
+      // Confirm that the intended video renders by confirming the expected title
       whatHappened.getVideoIframe().should('be.visible', {timeout: 60000}).then($iframe => {
         let body = $iframe.contents();
         cy.wrap(body).invoke('text').then($text => {
@@ -80,30 +84,57 @@ describe('Automation Testing challenge for Elucidat.', () => {
       guiltyOrNot.getBasedOn().should('be.visible');
       guiltyOrNot.getGuilty().should('be.visible');
       guiltyOrNot.getNotGuilty().should('be.visible');
+      // Vote button
+      guiltyOrNot.getVote().should('be.visible');
+      guiltyOrNot.getVoteState().invoke('attr','aria-disabled').then($disabled => {
+        expect($disabled).to.equal('true');
+      });
     }).then(() => {
-      // When either radio button 1 or 'Guilty' is clicked, selection should toggle
-      // (Note/to do: ideally would also test the toggling of the lock/caret icon here (it toggles with selection too)
+      /* RADIO BUTTON 1 --- When either radio button 1 or 'Guilty' is clicked, selection should toggle */
+      // Set
       guiltyOrNot.getRadio1().should('be.visible').click({force: true});
-      cy.wait(500);
       guiltyOrNot.getAnswer1().invoke('attr','class').then($class => {
         cy.wrap($class).should('contain', 'selected');
       });
+      // Vote button
+      guiltyOrNot.getVote().should('be.visible');
+      guiltyOrNot.getVoteState().invoke('attr','aria-disabled').then($disabled => {
+        expect($disabled).to.equal('false');
+      });
+      // Unset
       guiltyOrNot.getGuilty().click({force: true});
       cy.wait(500);
       guiltyOrNot.getAnswer1().invoke('attr','class').then($class => {
         cy.wrap($class).should('not.contain', 'selected');
       });
-      // When either radio button 2 or 'Not guilty' is clicked, selection should toggle
-      // (Note/to do: ideally would also test the toggling of the lock/caret icon here (it toggles with selection too)
+      // Vote button
+      guiltyOrNot.getVote().should('be.visible');
+      guiltyOrNot.getVoteState().invoke('attr','class').then($class => {
+        cy.wrap($class).should('contain', 'save_button--disabled');
+      });
+    }).then(() => {   
+      /* RADIO BUTTON 2 --- When either radio button 1 or 'Guilty' is clicked, selection should toggle */   
+      // Set
       guiltyOrNot.getRadio2().should('be.visible').click({force: true});
       cy.wait(500);
       guiltyOrNot.getAnswer2().invoke('attr','class').then($class => {
         cy.wrap($class).should('contain', 'selected');
       });
+      // Vote button
+      guiltyOrNot.getVote().should('be.visible');
+      guiltyOrNot.getVoteState().invoke('attr','aria-disabled').then($disabled => {
+        expect($disabled).to.equal('false');
+      });
+      // Unset
       guiltyOrNot.getNotGuilty().click({force: true});
       cy.wait(500);
       guiltyOrNot.getAnswer2().invoke('attr','class').then($class => {
         cy.wrap($class).should('not.contain', 'selected');
+      });
+      // Vote button
+      guiltyOrNot.getVote().should('be.visible');
+      guiltyOrNot.getVoteState().invoke('attr','class').then($class => {
+        cy.wrap($class).should('contain', 'save_button--disabled');
       });
     }).then(() => {
       // Note that this will currently fail - as the current string is 'Is Wesley guilty?' - Wesley is the victim!
