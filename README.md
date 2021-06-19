@@ -13,7 +13,8 @@ This repo provides examples of software testing for URL: https://learning.elucid
 * Cypress runner may be started from the 'Elucidat-Cypress' dir with 'npx cypress open' (headed) or 'npx cypress run' (headless electron)
 * This example is for demonstration purposes only.  It by no means achieves 100% coverage, but provides a good introduction to some of the techniques and considerations made when writing automated UI tests.
 * I have used the Page Object Model/Pattern which should reduce maintenance costs.
-* Note also that I have tried to enforce sequential execution by chaining together 'then()' methods.  I have found this approach useful when working with web apps - however is probably overkill in this context.  I have tried to comment where appropriate to provide commentary as to my approach. 
+* Note also that I have tried to enforce sequential execution by chaining together 'then()' methods.  I have found this approach useful when working with web apps - however it is probably overkill in this context.  
+* I have tried to comment where appropriate to provide commentary as to my approach. 
 
 **User Stories/Acceptance Criteria**
 
