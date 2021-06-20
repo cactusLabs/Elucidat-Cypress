@@ -7,7 +7,7 @@ Scenario: Landing page displays title of lesson
 Given a user navigates to the provided link https://learning.elucidat.com/course/5c9126fd760e5-60ba4c3fe8135
 	And the landing page loads
 	Then the title 'FINDING THE TRUTH' is displayed
-	So the user is immediately notified of the title of the lesson
+	And the user is immediately notified of the title of the lesson
 
 @elucidat @findingTheTruth @landingPage
 Scenario: Clicking the Landing page 'START' button begins the lesson 
