@@ -18,7 +18,7 @@ Given a user navigates to the provided link https://learning.elucidat.com/course
 	Then the user is navigated to the next page, beginning the lesson
 	
 @elucidat @findingTheTruth 
-Scenario: Finding The Truth page should display user progress 
+Scenario: Finding The Truth page should display user progress score as a percentage (%)
 Given a user navigates to the provided link https://learning.elucidat.com/course/5c9126fd760e5-60ba4c3fe8135
 	And the landing page loads
 	When the user clicks the 'START' button
